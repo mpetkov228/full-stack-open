@@ -1,11 +1,13 @@
 ```mermaid
 sequenceDiagram
-    Alice ->> Bob: Hello Bob, how are you?
-    Bob-->>John: How about you John?
-    Bob--x Alice: I am good thanks!
-    Bob-x John: I am good thanks!
-    Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
-
-    Bob-->Alice: Checking with John...
-    Alice->John: Yes... John, how are you?
+    Browser ->> Server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    Server -->> Browser: redirect to /exampleapp/notes
+    Browser ->> Server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    Server -->> Browser: HTML document
+    Browser ->> Server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    Server -->> Browser: CSS file
+    Browser ->> Server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    Server -->> Browser: JavaScript file
+    Browser ->> Server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    Server -->> Browser: JSON data
 ```
