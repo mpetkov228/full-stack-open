@@ -9,5 +9,5 @@ sequenceDiagram
     Note over Browser: browser executes JS code <br> to fetch JSON data
     Browser ->> Server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     Server -->> Browser: JSON data
-    
+    Note over Browser: browser triggers event handler <br> to render notes
 ```
