@@ -26,13 +26,16 @@ const App = () => {
     event.preventDefault();
     const newPerson = {
       name: newName,
-      number: newNumber,
-      id: persons.length + 1
+      number: newNumber
     };
 
     const found = persons.find((person) => person.name === newPerson.name);
     if (!found) {
-      setPersons(persons.concat(newPerson));
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then(response => {
+          setPersons(persons.concat(response.data));
+        });
     } else {
       alert(`${newName} is already added to the phonebook`);
     }
