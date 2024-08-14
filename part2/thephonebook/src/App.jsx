@@ -13,6 +13,7 @@ const App = () => {
   const [search, setSearch] = useState('');
   const [showAll, setShowAll] = useState(true);
   const [notificationMessage, setNotificationMessage] = useState(null);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     personService
@@ -40,9 +41,7 @@ const App = () => {
         });
       
       setNotificationMessage(`Added ${newPerson.name}`);
-      setTimeout(() => {
-        setNotificationMessage(null);
-      }, 5000);
+      removeNotification();
     } else {
       const confirm = window.confirm(`${found.name} is already added to phonebook, replace the old number with a new one?`);
       if (confirm) {
@@ -50,12 +49,17 @@ const App = () => {
           .update(found.id, newPerson)
           .then(response => {
             setPersons(persons.map(p => p.id !== found.id ? p : response.data));
+
+            setIsError(false);
+            setNotificationMessage(`Changed ${found.name}'s number`);
+            removeNotification();
+          })
+          .catch(error => {
+            setIsError(true);
+            setNotificationMessage(`Information of ${found.name} has already been removed from the server`);
+            removeNotification();
           });
         
-        setNotificationMessage(`Changed ${found.name}'s number`);
-        setTimeout(() => {
-          setNotificationMessage(null);
-        }, 5000);
       }
     }
 
@@ -83,10 +87,16 @@ const App = () => {
     setShowAll(false);
   };
 
+  const removeNotification = () => {
+    setTimeout(() => {
+      setNotificationMessage(null);
+    }, 5000);
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage} />
+      <Notification message={notificationMessage} isError={isError} />
       <Filter search={search} onSeachChange={onSearchChange} />
       <h3>Add a new</h3>
       <PersonForm 
