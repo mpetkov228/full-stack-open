@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
+import Notification from './components/Notification';
 import personService from './services/persons';
 
 const App = () => {
@@ -11,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [search, setSearch] = useState('');
   const [showAll, setShowAll] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState(null);
 
   useEffect(() => {
     personService
@@ -36,6 +38,11 @@ const App = () => {
         .then(response => {
           setPersons(persons.concat(response.data));
         });
+      
+      setNotificationMessage(`Added ${newPerson.name}`);
+      setTimeout(() => {
+        setNotificationMessage(null);
+      }, 5000);
     } else {
       const confirm = window.confirm(`${found.name} is already added to phonebook, replace the old number with a new one?`);
       if (confirm) {
@@ -44,6 +51,11 @@ const App = () => {
           .then(response => {
             setPersons(persons.map(p => p.id !== found.id ? p : response.data));
           });
+        
+        setNotificationMessage(`Changed ${found.name}'s number`);
+        setTimeout(() => {
+          setNotificationMessage(null);
+        }, 5000);
       }
     }
 
@@ -74,6 +86,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} />
       <Filter search={search} onSeachChange={onSearchChange} />
       <h3>Add a new</h3>
       <PersonForm 
