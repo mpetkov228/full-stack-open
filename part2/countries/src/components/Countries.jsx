@@ -1,14 +1,4 @@
-import DetailedCountry from "./DetailedCountry";
-
 const Countries = ({ countries, onShowClick }) => {
-    if (countries.length === 1) {
-        const country = countries[0];
-
-        return (
-            <DetailedCountry country={country} />
-        );
-    }
-
     return (
         <div>
             {countries.length > 10 
